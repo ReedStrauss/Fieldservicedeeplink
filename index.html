@@ -4,109 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator for Salesforce Field Service</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #202020; /* Dark background color */
-            color: #ffff; /* White text color */
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #202020; /* Slightly lighter background color */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Slightly heavier box shadow */
-            display: flex;
-        }
-
-        .left-column {
-            flex: 1;
-            padding: 20px;
-        }
-
-        .right-column {
-            flex: 1;
-            padding: 20px;
-        }
-
-        h2 {
-            color: #fff; /* White text color for headings */
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        select,
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #555; /* Darker border color */
-            border-radius: 5px;
-            font-size: 16px;
-            background-color: #444; /* Slightly lighter background color */
-            color: #fff; /* White text color */
-        }
-
-        select {
-            height: 40px;
-        }
-
-        button {
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #deepLinkDisplay {
-            font-weight: bold;
-            color: #fff; /* White text color */
-        }
-
-        #qrCodeDisplay {
-            margin-top: 20px;
-        }
-
-        .paramSet {
-            display: flex;
-            margin-bottom: 10px;
-        }
-
-        .paramSet input[type="text"] {
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        .paramSet button {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .paramSet button:hover {
-            background-color: #c82333;
-        }
-    </style>
+    <meta name="description" content="Generate QR codes for Salesforce Field Service actions with this easy-to-use tool. Create deep links and QR codes for records, logins, and global actions.">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script> <!-- Add 'defer' for asynchronous loading -->
 </head>
+<header>        
+    <h1>Deep Link Generator for Salesforce Field Service Mobile</h1>
+    <br>
+    <p>Generate Deep Links and QR codes for Salesforce Field Service actions with this easy-to-use tool. Create deep links and QR codes for records, logins, and global actions.</p> <!-- Improved description for SEO -->
+    <br>
+</header>
 <body onload="showHideFields(); addParam()" class="container">
     <div class="left-column">
         <h2>Input</h2>
-
+        <br>
         <div>
             <label for="actionType">Action Type:</label>
             <select id="actionType" onchange="showHideFields()">
@@ -152,99 +63,22 @@
             <!-- Initial set of parameters -->
         </div>
 
-        <button onclick="addParam()">Add Parameter</button>
+        <button id="addParamButton" onclick="addParam()">Add Parameter</button>
     </div>
 
     <div class="right-column">
         <h2>Output</h2>
-
+        <br>
         <h3>Generated Deep Link:</h3>
         <p id="deepLinkDisplay"></p>
 
         <h3>Generated QR Code:</h3>
         <div id="qrCodeDisplay"></div>
     </div>
+<br>
+<footer>
+    <p>&copy; 2023 QR Code Generator. Proud partner of The Field Press - find the most actionable field service insights on <a href="https://thefieldpress.com" target="_blank" rel="noopener noreferrer">The Field Press</a>.</p>
+</footer>
 
-    <script>
-        // JavaScript code here
-
-        // Store parameter names and values in an array of objects
-        const paramValues = [];
-
-        function showHideFields() {
-            const actionType = document.getElementById('actionType').value;
-
-            document.getElementById('recordFields').style.display = actionType === 'record' ? 'block' : 'none';
-            document.getElementById('loginFields').style.display = actionType === 'login' ? 'block' : 'none';
-            document.getElementById('globalFields').style.display = actionType === 'global' ? 'block' : 'none';
-            document.getElementById('parametersDiv').style.display = (actionType === 'record' || actionType === 'global') ? 'block' : 'none';
-            updateQRCode();
-        }
-
-        function updateQRCode() {
-            const actionType = document.getElementById('actionType').value;
-            let deepLinkURL = 'com.salesforce.fieldservice://v1/';
-
-            if (actionType === 'record') {
-                const sObjectId = document.getElementById('sObjectId').value;
-                deepLinkURL += `sObject/${sObjectId}/${document.getElementById('recordActionType').value}`;
-            } else if (actionType === 'login') {
-                const actionName = document.getElementById('actionName').value;
-                deepLinkURL += `login/${actionName}`;
-            } else if (actionType === 'global') {
-                const globalActionName = document.getElementById('globalActionName').value;
-                deepLinkURL += `globalaction/${globalActionName}`;
-            }
-
-            const paramPairs = paramValues.map(param => `${param.name}=${param.value}`);
-            const paramString = paramPairs.join('&');
-    if (actionType !== 'login') { // Check if action type is not "login"
-        const paramPairs = paramValues.map(param => `${param.name}=${param.value}`);
-        const paramString = paramPairs.join('&');
-        if (paramString) {
-            deepLinkURL += '?' + paramString;
-        }
-    }
-
-            document.getElementById('deepLinkDisplay').textContent = deepLinkURL;
-            const baseURL = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
-            const qrCodeURL = baseURL + encodeURIComponent(deepLinkURL);
-            document.getElementById('qrCodeDisplay').innerHTML = `<img src="${qrCodeURL}" alt="QR Code">`;
-        }
-
-        function addParam() {
-            const paramDiv = document.createElement('div');
-            paramDiv.className = 'paramSet';
-            paramDiv.innerHTML = `
-                <input type="text" placeholder="param name" oninput="updateQRCode(); updateParamValues(this)">
-                <input type="text" placeholder="param value" oninput="updateQRCode(); updateParamValues(this)">
-                <button onclick="removeParam(this)">Delete</button>
-            `;
-            document.getElementById('parametersDiv').appendChild(paramDiv);
-            updateQRCode();
-        }
-
-        function removeParam(btnElement) {
-            const paramDiv = btnElement.parentElement;
-            paramDiv.remove();
-            updateQRCode();
-            updateParamValues();
-        }
-
-// Function to update the parameter values array
-function updateParamValues() {
-    paramValues.length = 0; // Clear the array
-    const paramSets = document.querySelectorAll('.paramSet');
-    paramSets.forEach(paramSet => {
-        const paramName = paramSet.querySelector('input[placeholder="param name"]').value;
-        const paramValue = paramSet.querySelector('input[placeholder="param value"]').value;
-        if (paramName && paramValue) {
-            paramValues.push({ name: paramName, value: paramValue });
-        }
-    });
-    updateQRCode(); // Update the QR code after a change in parameters
-}
-
-    </script>
 </body>
 </html>
