@@ -150,16 +150,16 @@ footer a:hover {
 }
 
 /* Style for the deep-link-section */
-.deep-link-section {
+.explainer {
     color: #545454; /* Change text color to black */
 }
 
 /* Style for links within the deep-link-section */
-.deep-link-section a {
+.explainer a {
     color: #007BFF; /* Change link color to blue */
 }
 
 /* Style for links on hover within the deep-link-section */
-.deep-link-section a:hover {
+.explainer a:hover {
     text-decoration: underline; /* Underline links on hover */
 }
