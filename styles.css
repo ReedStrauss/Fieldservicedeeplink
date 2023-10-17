@@ -38,7 +38,9 @@ body {
 h1 {
     color: #fff;
 }
-
+h2 {
+    text-decoration: underline;
+}
 label {
     font-weight: bold;
 }
@@ -120,11 +122,20 @@ header h1 {
     font-size: 24px;
 }
 
-/* Style the footer with a subdued background color, centered text, and padding */
+/* Style the footer container */
 footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack items vertically */
     color: #545454; /* Dark text color */
+    padding: 20px; /* Add padding for spacing */
+}
+
+/* Style the text within the footer */
+footer p {
     text-align: center; /* Center-align the text */
-    padding: 20px 0; /* Add padding for spacing */
+    margin: 0; /* Remove default margin */
 }
 
 /* Style the link in the footer */
