@@ -78,7 +78,7 @@ button:hover {
 #deepLinkDisplay {
     font-weight: bold;
     color: #007BFF; /* Slightly blue color */
-    margin-top: 10px; /* Add some spacing from the elements above */
+    margin-top: 10px;
 }
 
 #qrCodeDisplay {
