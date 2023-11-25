@@ -75,3 +75,22 @@ function updateParamValues() {
     });
     updateQRCode(); // Update the QR code after a change in parameters
 }
+
+//fill the generators div from json 
+//held back for youreka testing
+/*
+fetch('generators.json')
+  .then(response => response.json())
+  .then(data => {
+    const container = document.getElementById('generator-container');
+    data.forEach(generator => {
+      const item = document.createElement('div');
+      item.innerHTML = `
+        <a href="${generator.href}">
+          <img src="${generator.src}" alt="${generator.alt}" style="background-color: #f5f5f5;">
+        </a>
+      `;
+      container.appendChild(item);
+    });
+  });
+  */

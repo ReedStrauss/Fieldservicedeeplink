@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youreka Deeplink and QR Code Generator</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+</head>
+<body>
+    <a href="../">Go Back</a>
+<br>
+<table>
+  <tr>
+    <td>
+      <label for="newForm">New Form (true/false):</label>
+      <input type="text" id="newForm" oninput="generateLink()">
+    </td>
+    <td>
+      <label for="templateID">Template ID:</label>
+      <input type="text" id="templateID" oninput="generateLink()">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label for="formID">Form ID:</label>
+      <input type="text" id="formID" oninput="generateLink()">
+    </td>
+    <td>
+      <label for="accountID">Account ID:</label>
+      <input type="text" id="accountID" oninput="generateLink()">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label for="contact">Contact (NEW/ID):</label>
+      <input type="text" id="contact" oninput="generateLink()">
+    </td>
+    <td>
+      <label for="recordId">Record ID:</label>
+      <input type="text" id="recordId" oninput="generateLink()">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <label for="forceSync">Force Sync (true/false):</label>
+      <input type="text" id="forceSync" oninput="generateLink()">
+    </td>
+  </tr>
+</table>
+
+
+<p id="deeplink"></p>
+<div id="qrcode"></div>
+
+<script type="text/javascript">
+  function generateLink() {
+    var newForm = document.getElementById("newForm").value;
+    var templateID = document.getElementById("templateID").value;
+    var formID = document.getElementById("formID").value;
+    var accountID = document.getElementById("accountID").value;
+    var contact = document.getElementById("contact").value;
+    var recordId = document.getElementById("recordId").value;
+    var forceSync = document.getElementById("forceSync").value;
+    
+    var deeplink = 'https://youreka.io/yourekamobile?';
+    
+    if (newForm) deeplink += 'newForm=' + newForm + '&';
+    if (templateID) deeplink += 'TemplateID=' + templateID + '&';
+    if (formID) deeplink += 'FormID=' + formID + '&';
+    if (accountID) deeplink += 'disco__Form_Account__c=' + accountID + '&';
+    if (contact) deeplink += 'disco__Form_Contact__c=' + contact + '&';
+    if (recordId) deeplink += 'recordId=' + recordId + '&';
+    if (forceSync) deeplink += 'forceSync=' + forceSync;
+    
+    document.getElementById("deeplink").textContent = deeplink;
+    
+    var typeNumber = 0;
+    var errorCorrectionLevel = 'L';
+    var qr = qrcode(typeNumber, errorCorrectionLevel);
+    qr.addData(deeplink);
+    qr.make();
+    document.getElementById('qrcode').innerHTML = qr.createImgTag();
+  }
+</script>
+
+</body>
+</html>
